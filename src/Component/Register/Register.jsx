@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../../Provider/AuthProvider";
+import { AuthContext } from "../../Provider/AuthContext";
 import { useNavigate } from "react-router";
 
 export default function Register() {
