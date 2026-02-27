@@ -8,7 +8,7 @@ export const useAxiosSecure = () => {
 
   const instance = axios.create({
     // baseURL: "https://server-tawny-mu.vercel.app/",
-    baseURL: "http://localhost:5000",
+    baseURL: "http://localhost:3000",
     headers: user?.accessToken
       ? {
           Authorization: `Bearer ${user.accessToken}`,

@@ -12,7 +12,9 @@ import {
 import useRole from "../../utils/useRole";
 
 const DashboardSidebar = ({ closeSidebar }) => {
-  const { role, loading } = useRole();
+  const { role } = useRole();
+  // const role  = "donor";
+  console.log(role)
   const location = useLocation();
 
 

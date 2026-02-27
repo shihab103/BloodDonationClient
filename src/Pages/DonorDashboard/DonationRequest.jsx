@@ -1,9 +1,15 @@
- import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
+import { useAxiosSecure } from "../../utils/axiosSecure";
 import { AuthContext } from "../../Provider/AuthContext";
 
-const DonationRequest=()=> {
-  const { user } = useContext(AuthContext);
+const DonationRequest = () => {
+  const { user, userInfo } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate();
+
   const [districts, setDistricts] = useState([]);
   const [upazilas, setUpazilas] = useState([]);
   const [filteredUpazilas, setFilteredUpazilas] = useState([]);
@@ -12,6 +18,7 @@ const DonationRequest=()=> {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -43,21 +50,58 @@ const DonationRequest=()=> {
     setFilteredUpazilas(matchedUpazilas);
   };
 
-  const onSubmit = async (data) => {
+ const onSubmit = async (data) => {
+  if (userInfo?.status === "blocked") {
+    return Swal.fire(
+      "Blocked!",
+      "You are not allowed to create a request.",
+      "error"
+    );
+  }
 
-    const selectedDistrict = districts.find((d) => d.id === data.recipientDistrict);
-    const selectedUpazila = upazilas.find((u) => u.id === data.recipientUpazila);
+  const selectedDistrict = districts.find(
+    (d) => d.id === data.recipientDistrict
+  );
 
-    const requestData = {
-      requesterName: user?.displayName,
-      requesterEmail: user?.email,
-      ...data,
-      recipientDistrict: selectedDistrict?.name || "",
-      recipientUpazila: selectedUpazila?.name || "",
-      donationStatus: "pending",
-    };
-    console.log("requestData====",requestData);
+  const selectedUpazila = upazilas.find(
+    (u) => u.id === data.recipientUpazila
+  );
+
+  const requestData = {
+    requesterName: user?.displayName,
+    requesterEmail: user?.email,
+    recipientName: data.recipientName,
+    recipientDistrict: selectedDistrict?.name || "",
+    recipientUpazila: selectedUpazila?.name || "",
+    hospitalName: data.hospitalName,
+    fullAddress: data.fullAddress,
+    bloodGroup: data.bloodGroup,
+    donationDate: data.donationDate,
+    donationTime: data.donationTime,
+    requestMessage: data.requestMessage,
+    donationStatus: "pending",
   };
+
+  try {
+    const res = await axiosSecure.post(
+      "/create-donation-request",
+      requestData
+    );
+
+    if (res.data.insertedId) {
+      Swal.fire(
+        "Success!",
+        "Donation request created successfully!",
+        "success"
+      );
+      reset();
+      navigate("/dashboard");
+    }
+  } catch (err) {
+    console.log(err);
+    Swal.fire("Error!", "Something went wrong!", "error");
+  }
+};
 
   return (
     <div className="max-w-5xl mx-auto p-6">
