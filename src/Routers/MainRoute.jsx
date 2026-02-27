@@ -4,6 +4,7 @@ import Login from "../Component/Login/Login";
 import Register from "../Component/Register/Register";
 import Home from "../Pages/Home/Home";
 import DonationRequest from "../Pages/DonorDashboard/DonationRequest";
+import DashboardLayout from "../Layout/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ export const router = createBrowserRouter([
       { path: "/login", Component: Login },
       { path: "/register", Component: Register },
     { path: "/create-donation-request", Component: DonationRequest },
+    { path: "/dashboard", Component: DashboardLayout },
 
     ],
   },
