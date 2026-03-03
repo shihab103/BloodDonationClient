@@ -5,7 +5,7 @@ import Register from "../Component/Register/Register";
 import Home from "../Pages/Home/Home";
 import DonationRequest from "../Pages/DonorDashboard/DonationRequest";
 import DashboardLayout from "../Layout/DashboardLayout";
-import PrivateRoute from "../../../../BloodOld/Blood-Donation-Client/src/Routers/PrivateRoute";
+import MyDonationRequests from "../Pages/DonorDashboard/MyDonationRequests";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +22,10 @@ export const router = createBrowserRouter([
           {
             path: "create-donation-request",
             Component: DonationRequest,
+          },
+          {
+            path: "my-donation-requests",
+            Component: MyDonationRequests,
           },
         ],
       },

@@ -1,15 +1,56 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { AuthContext } from "../../providers/AuthProvider";
-import Pagination from "./Pagination";
+import { AuthContext } from "../../Provider/AuthContext";
 
 const MyDonationRequests = () => {
- // const { user } = useContext(AuthContext);
-   
+  const { user } = useContext(AuthContext);
+  const [requests, setRequests] = useState([]);
+  const [filteredRequests, setFilteredRequests] = useState([]);
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-   
-  
+  const itemsPerPage = 5;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = user?.accessToken;
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/my-donation-requests?email=${user?.email}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setRequests(res.data);
+      } catch (error) {
+        console.error("Failed to fetch requests", error);
+      }
+    };
+
+    if (user?.email) {
+      fetchData();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (statusFilter === "all") {
+      setFilteredRequests(requests);
+    } else {
+      const filtered = requests.filter(
+        (req) => req.donationStatus === statusFilter
+      );
+      setFilteredRequests(filtered);
+      setCurrentPage(1);
+    }
+  }, [statusFilter, requests]);
+
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+  const currentItems = filteredRequests.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
+
+  return (
     <div className="p-6 md:p-8 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-6 text-center text-red-600 flex items-center justify-center gap-2">
         🩸 My Donation Requests
@@ -84,16 +125,6 @@ const MyDonationRequests = () => {
         </table>
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-6 flex justify-center">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
-        </div>
-      )}
     </div>
   );
 };
