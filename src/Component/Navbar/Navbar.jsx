@@ -1,104 +1,143 @@
-import { useContext } from "react";
-import { NavLink, useNavigate } from "react-router";
+import { useContext, useState } from "react";
+import { CgMenuMotion } from "react-icons/cg";
+import { RiMenuAddLine } from "react-icons/ri";
+import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../Provider/AuthContext";
 
-export default function Navbar() {
-  const { user, logOut, loading } = useContext(AuthContext);
+const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogOut = () => {
-    logOut()
-      .then(() => {
-        console.log("User logged out successfully");
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Logout failed:", error);
-      });
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
-  const links = (
-    <div className="flex gap-3">
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/dashboard">Dashboard</NavLink>
-    </div>
-  );
-
-  // 🔹 Loading হলে কিছু না দেখাও বা spinner দেখাতে পারো
-  if (loading) return null;
+  const publicMenu = [
+    { name: "Home", path: "/" },
+    { name: "Search Donor", path: "/search-page" },
+    { name: "Blood Donation Request", path: "/blood-donation-request" },
+    { name: "About", path: "/about" },
+  ];
 
   return (
-    <div className="navbar bg-base-100 shadow-sm px-4">
-      <div className="navbar-start">
-        {/* Mobile Dropdown */}
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <nav className="overflow-x-clip bg-red-50 shadow-md sticky top-0 z-50">
+      <div className="w-11/12 mx-auto py-5 flex justify-between items-center relative">
+        <Link to="/" className="logo">
+          <span className="text-xl font-bold text-red-500">Blood Donate</span>
+        </Link>
+
+        {/* Desktop Menu */}
+        <ul className="hidden lg:flex items-center gap-5 font-medium">
+          {publicMenu.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                isActive ? "text-red-500 font-semibold" : "hover:text-red-500"
+              }
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
-          >
-            {links}
-          </ul>
+              {item.name}
+            </NavLink>
+          ))}
+
+          {/* Show Dashboard only if user is logged in */}
+          {user?.email && (
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                isActive ? "text-red-500 font-semibold" : "hover:text-red-500"
+              }
+            >
+              Dashboard
+            </NavLink>
+          )}
+
+          {user?.email ? (
+            <button onClick={handleLogout} className="ml-4 hover:text-red-500">
+              Logout
+            </button>
+          ) : (
+            <>
+              <NavLink to="/login">Login</NavLink>
+              <NavLink to="/registration">Register</NavLink>
+            </>
+          )}
+        </ul>
+
+        {/* Mobile Menu Button */}
+        <div className="lg:hidden">
+          {isMenuOpen ? (
+            <CgMenuMotion
+              onClick={() => setIsMenuOpen(false)}
+              className="text-2xl cursor-pointer"
+            />
+          ) : (
+            <RiMenuAddLine
+              onClick={() => setIsMenuOpen(true)}
+              className="text-2xl cursor-pointer"
+            />
+          )}
         </div>
 
-        <button onClick={()=>navigate('/')} className="btn btn-ghost text-xl">
-          SRS
-        </button>
-      </div>
+        {/* Mobile Menu */}
+        <div
+          className={`absolute top-20 left-0 w-full bg-white z-40 transition-all duration-300 ease-in-out ${
+            isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
+        >
+          <ul className="flex flex-col items-center gap-4 py-5">
+            {publicMenu.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  isActive ? "text-orange-500 font-semibold" : "hover:text-orange-500"
+                }
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.name}
+              </NavLink>
+            ))}
 
-      {/* Desktop Links */}
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{links}</ul>
-      </div>
-
-      {/* Navbar End */}
-      <div className="navbar-end flex items-center gap-2">
-        {user ? (
-          <div className="flex items-center gap-2">
-            {/* User Photo */}
-            <img
-              src={
-                user.photoURL ||
-                "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-              }
-              alt={user.displayName || "User Avatar"}
-              className="w-8 h-8 rounded-full object-cover"
-              onError={(e) =>
-                (e.currentTarget.src =
-                  "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y")
-              }
-            />
-            {/* User Name */}
-            {user.displayName && (
-              <span className="font-medium text-gray-700">
-                {user.displayName}
-              </span>
+            {/* Show Dashboard only if user is logged in */}
+            {user?.email && (
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  isActive ? "text-orange-500 font-semibold" : "hover:text-orange-500"
+                }
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Dashboard
+              </NavLink>
             )}
-            <button onClick={handleLogOut} className="btn">
-              Log Out
-            </button>
-          </div>
-        ) : (
-          <button onClick={() => navigate("/login")} className="btn">
-            Login
-          </button>
-        )}
+
+            {user?.email ? (
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  handleLogout();
+                }}
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <NavLink to="/login" onClick={() => setIsMenuOpen(false)}>Login</NavLink>
+                <NavLink to="/registration" onClick={() => setIsMenuOpen(false)}>Register</NavLink>
+              </>
+            )}
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   );
-}
+};
+
+export default Navbar;
