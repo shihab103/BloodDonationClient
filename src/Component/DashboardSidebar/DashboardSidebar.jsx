@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Link, useLocation } from "react-router";
 import {
   FaUser,
@@ -12,8 +12,8 @@ import {
 import useRole from "../../utils/useRole";
 
 const DashboardSidebar = ({ closeSidebar }) => {
-  const { role } = useRole();
-  // const role  = "donor";
+  // const { role } = useRole();
+  const role  = "donor";
   console.log(role)
   const location = useLocation();
 
@@ -67,17 +67,6 @@ const DashboardSidebar = ({ closeSidebar }) => {
               }`}
             >
               <FaUsers size={18} /> All Users
-            </Link>
-            <Link
-              to="/dashboard/content-management"
-              onClick={handleClick}
-              className={`${baseLinkClasses} ${
-                isActive("/dashboard/content-management")
-                  ? activeLinkClasses
-                  : inactiveLinkClasses
-              }`}
-            >
-              <FaFileAlt size={18} /> Content Management
             </Link>
             <Link
               to="/dashboard/all-blood-donation-request"
@@ -137,17 +126,7 @@ const DashboardSidebar = ({ closeSidebar }) => {
             >
               <FaGift size={18} /> My Donation Requests
             </Link>
-                        <Link
-              to="/dashboard/content-management"
-              onClick={handleClick}
-              className={`${baseLinkClasses} ${
-                isActive("/dashboard/content-management")
-                  ? activeLinkClasses
-                  : inactiveLinkClasses
-              }`}
-            >
-              <FaFileAlt size={18} /> Content Management
-            </Link>
+                        
           </>
         )}
 
@@ -173,17 +152,7 @@ const DashboardSidebar = ({ closeSidebar }) => {
             >
               <FaListAlt size={18} /> All Donation Requests
             </Link>
-            <Link
-              to="/dashboard/content-management"
-              onClick={handleClick}
-              className={`${baseLinkClasses} ${
-                isActive("/dashboard/content-management")
-                  ? activeLinkClasses
-                  : inactiveLinkClasses
-              }`}
-            >
-              <FaFileAlt size={18} /> Content Management
-            </Link>
+            
           </>
         )}
       </nav>
