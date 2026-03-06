@@ -129,7 +129,7 @@ const Login = () => {
 
           <p className="mt-4 text-center">
             Don’t have an account?{" "}
-            <Link to="/register" className="text-[#669295] underline">
+            <Link to="/registration" className="text-[#669295] underline">
               Register here
             </Link>
           </p>
