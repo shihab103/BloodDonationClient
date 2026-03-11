@@ -13,7 +13,7 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const { createUser, updateUser } = useContext(AuthContext);
+  const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [districts, setDistricts] = useState([]);

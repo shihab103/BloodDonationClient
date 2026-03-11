@@ -7,6 +7,7 @@ import DonationRequest from "../Pages/DonorDashboard/DonationRequest";
 import DashboardLayout from "../Layout/DashboardLayout";
 import MyDonationRequests from "../Pages/DonorDashboard/MyDonationRequests";
 import HomeStats from "../Pages/HomeComponent/HomeStats";
+import Profile from "../Component/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
           {
             path: "my-donation-requests",
             Component: MyDonationRequests,
+          },
+          {
+            path: "profile",
+            Component: Profile,
           },
         ],
       },
