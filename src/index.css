@@ -4,3 +4,11 @@
 .active{
     text-decoration: underline;
 }
+
+/* body {
+  cursor: none; 
+} */
+
+a, button {
+  cursor: pointer;
+}

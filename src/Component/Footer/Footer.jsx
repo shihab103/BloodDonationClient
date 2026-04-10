@@ -7,7 +7,6 @@ const Footer = () => {
 
   const publicMenu = [
     { name: "Home", path: "/" },
-    { name: "Search Donor", path: "/search-page" },
     { name: "Blood Donation Request", path: "/blood-donation-request" },
   ];
 

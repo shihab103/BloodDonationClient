@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.16",
     "axios": "^1.13.5",
     "firebase": "^12.4.0",
+    "framer-motion": "^12.38.0",
     "lottie-react": "^2.4.1",
     "react": "^19.1.1",
     "react-countup": "^6.5.3",

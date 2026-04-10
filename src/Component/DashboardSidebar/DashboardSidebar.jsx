@@ -13,7 +13,7 @@ import useRole from "../../utils/useRole";
 
 const DashboardSidebar = ({ closeSidebar }) => {
   const { role } = useRole();
-  // const role  = "donor";
+  // const role  = "admin";
   console.log(role)
   const location = useLocation();
 
@@ -69,26 +69,15 @@ const DashboardSidebar = ({ closeSidebar }) => {
               <FaUsers size={18} /> All Users
             </Link>
             <Link
-              to="/dashboard/all-blood-donation-request"
+              to="/dashboard/donation-management"
               onClick={handleClick}
               className={`${baseLinkClasses} ${
-                isActive("/dashboard/all-blood-donation-request")
+                isActive("/dashboard/donation-management")
                   ? activeLinkClasses
                   : inactiveLinkClasses
               }`}
             >
-              <FaListAlt size={18} /> All Donation Requests
-            </Link>
-            <Link
-              to="/dashboard/contact"
-              onClick={handleClick}
-              className={`${baseLinkClasses} ${
-                isActive("/dashboard/contact")
-                  ? activeLinkClasses
-                  : inactiveLinkClasses
-              }`}
-            >
-              <FaListAlt size={18} /> Contact
+              <FaListAlt size={18} /> Manage Donation Management
             </Link>
           </>
         )}
@@ -142,15 +131,15 @@ const DashboardSidebar = ({ closeSidebar }) => {
               <FaClipboardList size={18} /> Volunteer Dashboard Home
             </Link>
             <Link
-              to="/dashboard/all-blood-donation-request"
+              to="/dashboard/donation-management"
               onClick={handleClick}
               className={`${baseLinkClasses} ${
-                isActive("/dashboard/all-blood-donation-request")
+                isActive("/dashboard/donation-management")
                   ? activeLinkClasses
                   : inactiveLinkClasses
               }`}
             >
-              <FaListAlt size={18} /> All Donation Requests
+              <FaListAlt size={18} /> Manage Donation Management
             </Link>
             
           </>

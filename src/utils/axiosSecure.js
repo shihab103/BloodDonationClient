@@ -7,8 +7,7 @@ export const useAxiosSecure = () => {
   const { user } = useContext(AuthContext);
 
   const instance = axios.create({
-    // baseURL: "https://server-tawny-mu.vercel.app/",
-    baseURL: "http://localhost:3000",
+    baseURL: import.meta.env.VITE_API_URL,
     headers: user?.accessToken
       ? {
           Authorization: `Bearer ${user.accessToken}`,

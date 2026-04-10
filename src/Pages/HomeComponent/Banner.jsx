@@ -7,12 +7,12 @@ const Banner = () => {
   const navigate = useNavigate();
 
   const handleJoin = () => {
-    navigate("/registration");
+    navigate("/find-donor");
+  };
+  const handleContribute = () => {
+    navigate("/selfless-contribution");
   };
 
-  const handleSearch = () => {
-    navigate("/search-page");
-  };
 
   return (
     <div className="bg-[#ffcdd2] py-12 px-4 md:px-10 lg:px-20 min-h-[calc(100vh-68px)] flex flex-col-reverse md:flex-row items-center justify-between gap-10">
@@ -44,15 +44,33 @@ const Banner = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
           <button
             onClick={handleJoin}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-md transition"
+            className="group relative bg-[#d32f2f] text-white font-bold py-4 px-10 rounded-full transition-all duration-300 ease-in-out shadow-[0_10px_20px_-10px_rgba(211,47,47,0.5)] hover:shadow-[0_15px_25px_-10px_rgba(211,47,47,0.6)] hover:-translate-y-0.5 overflow-hidden active:scale-95"
           >
-            Join as a Donor
+            {/* বাটন শাইন ইফেক্ট */}
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+            
+            <span className="relative z-10 flex items-center gap-2">
+              Find the Donor
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+              </span>
+            </span>
           </button>
           <button
-            onClick={handleSearch}
-            className="bg-white border-2 border-red-600 text-red-600 hover:bg-red-100 font-semibold py-3 px-6 rounded-md transition"
+            onClick={handleContribute}
+            className="group relative bg-[#d32f2f] text-white font-bold py-4 px-10 rounded-full transition-all duration-300 ease-in-out shadow-[0_10px_20px_-10px_rgba(211,47,47,0.5)] hover:shadow-[0_15px_25px_-10px_rgba(211,47,47,0.6)] hover:-translate-y-0.5 overflow-hidden active:scale-95"
           >
-            Search Donors
+            {/* বাটন শাইন ইফেক্ট */}
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+            
+            <span className="relative z-10 flex items-center gap-2">
+              Selfless Contribution
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+              </span>
+            </span>
           </button>
         </div>
       </div>
