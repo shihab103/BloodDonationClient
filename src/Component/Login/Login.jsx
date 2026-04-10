@@ -110,22 +110,6 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center my-5">
-            <div className="grow border-t"></div>
-            <span className="mx-3 text-sm">OR</span>
-            <div className="grow border-t"></div>
-          </div>
-
-          {/* Google Login */}
-          <button
-            onClick={handleGoogleLogin}
-            disabled={loading}
-            className="flex items-center justify-center gap-2 border py-2 w-full rounded-lg hover:bg-base-200 transition"
-          >
-            <FcGoogle size={22} />
-            <span>Continue with Google</span>
-          </button>
 
           <p className="mt-4 text-center">
             Don’t have an account?{" "}
