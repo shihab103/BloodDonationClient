@@ -10,6 +10,7 @@ import {
   FaUserAlt, 
   FaCalendarAlt
 } from "react-icons/fa";
+import Loading from "../../Component/Loading/Loading";
 
 const AdminDonationManagement = () => {
   const [inProgressRequests, setInProgressRequests] = useState([]);
@@ -44,7 +45,7 @@ const AdminDonationManagement = () => {
         text: status === 'done' ? "Is this donation successfully completed?" : "Do you want to cancel this progress?",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: status === 'done' ? "#10B981" : "#EF4444",
+        confirmButtonColor: status === 'done' ? "#ffe2e2" : "#EF4444",
         confirmButtonText: "Yes, update it!",
       });
 
@@ -59,10 +60,7 @@ const AdminDonationManagement = () => {
   };
 
   if (loading) return (
-    <div className="flex flex-col justify-center items-center py-20">
-      <FaSpinner className="animate-spin text-5xl text-red-600 mb-4" />
-      <p className="text-gray-500 font-bold">Loading records...</p>
-    </div>
+    <Loading/>
   );
 
   return (
@@ -89,7 +87,7 @@ const AdminDonationManagement = () => {
                       {req.recipientName}
                     </h3>
                     <p className="text-sm text-gray-600 flex items-center gap-2">
-                      <FaUserAlt className="text-gray-400 text-xs"/> <span className="font-bold">Donor:</span> {req.donorName}
+                      <FaUserAlt className="text-gray-400 text-xs"/> <span className="font-bold">Donor:</span> {req.donorEmail}
                     </p>
                     <p className="text-xs text-gray-400 flex items-center gap-2 italic">
                       <FaHospital className="text-red-400"/> {req.hospitalName}
@@ -99,7 +97,7 @@ const AdminDonationManagement = () => {
                   <div className="flex gap-3">
                     <button
                       onClick={() => handleStatusUpdate(req._id, "done")}
-                      className="flex items-center gap-2 bg-green-500 text-white px-5 py-3 rounded-2xl font-black text-xs uppercase hover:bg-green-600 shadow-lg shadow-green-100 transition-all"
+                      className="flex items-center gap-2 bg-[#155dfc] text-white px-5 py-3 rounded-2xl font-black text-xs uppercase hover:bg-green-600 shadow-lg shadow-green-100 transition-all"
                     >
                       <FaCheckCircle /> Done
                     </button>

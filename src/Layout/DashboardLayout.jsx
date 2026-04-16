@@ -18,9 +18,7 @@ const DashboardLayout = () => {
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar for large devices (unchanged) */}
       <aside className="hidden md:block w-64 bg-white shadow-md">
-        <h2 className="text-2xl font-bold text-blue-600 pt-3 pl-8">
-          📊 Dashboard
-        </h2>
+        
         <div>
           <DashboardSidebar />
         </div>

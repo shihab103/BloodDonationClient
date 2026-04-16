@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../Provider/AuthContext";
 import Swal from "sweetalert2";
+import Loading from "../../Component/Loading/Loading";
 
 const SelflessContribution = () => {
   const auth = useContext(AuthContext);
@@ -90,9 +91,7 @@ const SelflessContribution = () => {
 
   if (loading || authLoading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-600 border-t-transparent"></div>
-      </div>
+      <Loading/>
     );
   }
 

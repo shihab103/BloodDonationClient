@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { AuthContext } from "../../Provider/AuthContext"; 
+import Loading from '../../Component/Loading/Loading';
 
 const FindDonor = () => {
   const { user } = useContext(AuthContext); 
@@ -24,31 +25,102 @@ const FindDonor = () => {
     fetchDonors();
   }, [API_URL]);
 
-  const handleRequestBlood = (donor) => {
-    Swal.fire({
-      title: `Request Blood from ${donor.name}?`,
-      text: `Send a request for ${donor.bloodGroup} blood?`,
-      icon: 'question',
+  const handleRequestBlood = async (donor) => {
+    const { value: formValues } = await Swal.fire({
+      title: `<h2 class="text-2xl font-bold text-slate-800">Request <span class="text-red-600">Blood</span></h2>`,
+      html: `
+        <div class="text-left mt-4 space-y-4 px-2">
+          <div>
+            <label class="block text-sm font-semibold text-slate-600 mb-1">Hospital Name</label>
+            <input id="hospitalName" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition-all" placeholder="Enter hospital name...">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-600 mb-1">Full Address</label>
+            <input id="fullAddress" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition-all" placeholder="Street, Upazila, District">
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-slate-600 mb-1">Donation Date</label>
+              <input id="donationDate" type="date" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition-all">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-slate-600 mb-1">Time</label>
+              <input id="donationTime" type="time" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition-all">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-600 mb-1">Emergency Message</label>
+            <textarea id="requestMessage" class="w-full px-4 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 outline-none transition-all h-20" placeholder="Why do you need blood? (Optional)"></textarea>
+          </div>
+        </div>
+      `,
       showCancelButton: true,
-      confirmButtonColor: '#d32f2f',
-      confirmButtonText: 'Send Request',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire('Sent!', 'Your request has been sent to the donor.', 'success');
+      confirmButtonText: 'Submit Request',
+      confirmButtonColor: '#dc2626',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: '#94a3b8',
+      focusConfirm: false,
+      customClass: {
+        popup: 'rounded-[32px] border-none shadow-2xl',
+        confirmButton: 'rounded-xl px-6 py-3 font-bold',
+        cancelButton: 'rounded-xl px-6 py-3 font-bold'
+      },
+      preConfirm: () => {
+        const hospitalName = document.getElementById('hospitalName').value;
+        const fullAddress = document.getElementById('fullAddress').value;
+        const donationDate = document.getElementById('donationDate').value;
+        const donationTime = document.getElementById('donationTime').value;
+        const requestMessage = document.getElementById('requestMessage').value;
+
+        if (!hospitalName || !fullAddress || !donationDate || !donationTime) {
+          Swal.showValidationMessage('Please fill all required fields');
+          return false;
+        }
+        return { hospitalName, fullAddress, donationDate, donationTime, requestMessage };
       }
     });
+
+    if (formValues) {
+      // অ্যাডমিন প্যানেলের ফিল্ডের সাথে মিল রেখে ডেটা অবজেক্ট
+      const requestData = {
+        requesterName: user?.displayName,
+        requesterEmail: user?.email,
+        donorName: donor.name,    // অ্যাডমিন পেজে এটি প্রয়োজন
+        donorEmail: donor.email,  // অ্যাডমিন পেজে এটি প্রয়োজন
+        recipientName: donor.name, 
+        recipientDistrict: donor.location,
+        bloodGroup: donor.bloodGroup,
+        hospitalName: formValues.hospitalName,
+        fullAddress: formValues.fullAddress,
+        donationDate: formValues.donationDate,
+        donationTime: formValues.donationTime,
+        requestMessage: formValues.requestMessage,
+        donationStatus: "inprogress", // অ্যাডমিন সরাসরি ইন-প্রগ্রেস সেকশনে দেখতে পাবে
+        createdAt: new Date(),
+      };
+
+      try {
+        const response = await axios.post(`${API_URL}/create-donation-request`, requestData);
+        if (response.data.insertedId) {
+          Swal.fire({
+            title: 'Request Sent!',
+            text: 'Your request is now in progress and visible to Admin.',
+            icon: 'success',
+            confirmButtonColor: '#dc2626',
+            customClass: { popup: 'rounded-[24px]' }
+          });
+        }
+      } catch (error) {
+        Swal.fire('Error', error.response?.data?.message || 'Something went wrong', 'error');
+      }
+    }
   };
 
   const filteredDonors = filterGroup 
     ? donors.filter(d => d.bloodGroup === filterGroup)
     : donors;
 
-  if (loading) return (
-    <div className="flex h-64 items-center justify-center">
-      <div className="h-10 w-10 animate-spin rounded-full border-4 border-red-600 border-t-transparent"></div>
-    </div>
-  );
+  if (loading) return <Loading/>;
 
   return (
     <div className="min-h-screen bg-slate-50 py-10 px-4">
@@ -70,7 +142,6 @@ const FindDonor = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDonors.length > 0 ? (
             filteredDonors.map((donor) => {
-              // চেক করা হচ্ছে কার্ডটি বর্তমান ইউজারের কি না
               const isCurrentUser = user?.email === donor.email;
 
               return (
@@ -81,7 +152,7 @@ const FindDonor = () => {
 
                   <div className="flex items-center gap-4 mb-4">
                     <img 
-                      src={donor.photoURL} 
+                      src={donor.photoURL || 'https://via.placeholder.com/150'} 
                       alt={donor.name} 
                       className="w-16 h-16 rounded-2xl object-cover ring-4 ring-red-50"
                     />
@@ -106,12 +177,11 @@ const FindDonor = () => {
                      <div className="flex justify-between text-sm">
                         <span className="text-slate-500">Joined</span>
                         <span className="text-slate-700 font-medium">
-                          {new Date(donor.joinedAt).toLocaleDateString()}
+                          {donor.joinedAt ? new Date(donor.joinedAt).toLocaleDateString() : 'N/A'}
                         </span>
                      </div>
                   </div>
 
-                  {/* বাটন কন্ডিশনাল রেন্ডারিং */}
                   <button 
                     onClick={() => !isCurrentUser && handleRequestBlood(donor)}
                     disabled={isCurrentUser}

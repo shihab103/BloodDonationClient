@@ -3,6 +3,7 @@ import { CgMenuMotion } from "react-icons/cg";
 import { RiMenuAddLine } from "react-icons/ri";
 import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../Provider/AuthContext";
+import NotificationBell from "../../Pages/PublicPages/NotificationBell";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -57,8 +58,10 @@ const Navbar = () => {
             </NavLink>
           )}
 
+          <NotificationBell/>
+
           {user?.email ? (
-            <button onClick={handleLogout} className="ml-4 hover:text-red-500">
+            <button onClick={handleLogout} className=" hover:text-red-500">
               Logout
             </button>
           ) : (

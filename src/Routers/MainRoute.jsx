@@ -14,6 +14,7 @@ import BloodDonationRequests from "../Pages/PublicPages/BloodDonationRequests";
 import AdminDonationManagement from "../Pages/AdminDashboard/AdminDonationManagement";
 import SelflessContribution from "../Pages/PublicPages/SelflessContribution";
 import FindDonor from "../Pages/PublicPages/FindDonor";
+import NotificationBell from "../Pages/PublicPages/NotificationBell";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
       { path: "/login", Component: Login },
       { path: "/registration", Component: Register },
       { path: "/about", Component: HomeStats },
+      { path: "nn", Component: NotificationBell },
       {
         path: "blood-donation-request",
         Component: BloodDonationRequests,

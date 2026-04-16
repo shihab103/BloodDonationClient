@@ -173,7 +173,6 @@ const BloodDonationRequests = () => {
     return matchesGroup && matchesDistance;
   });
 
-  // --- লোডিং স্ক্রিন কম্পোনেন্ট ---
   if (isLoading) {
     return <Loading/>
   }
