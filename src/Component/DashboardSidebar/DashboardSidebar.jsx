@@ -22,9 +22,10 @@ const DashboardSidebar = ({ closeSidebar }) => {
 
   const baseLinkClasses =
     "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 mb-1 group";
-  
-  const activeLinkClasses = "bg-[#155dfc] text-white shadow-lg shadow-blue-200 translate-x-1";
-  
+
+  const activeLinkClasses =
+    "bg-[#155dfc] text-white shadow-lg shadow-blue-200 translate-x-1";
+
   const inactiveLinkClasses =
     "text-gray-600 hover:bg-[#eff6ff] hover:text-[#155dfc]";
 
@@ -43,23 +44,44 @@ const DashboardSidebar = ({ closeSidebar }) => {
             to="/dashboard/profile"
             onClick={handleClick}
             className={`${baseLinkClasses} ${
-              isActive("/dashboard/profile") ? activeLinkClasses : inactiveLinkClasses
+              isActive("/dashboard/profile")
+                ? activeLinkClasses
+                : inactiveLinkClasses
             }`}
           >
-            <FaUser className={`${isActive("/dashboard/profile") ? "text-white" : "text-gray-400 group-hover:text-[#155dfc]"}`} size={18} />
+            <FaUser
+              className={`${isActive("/dashboard/profile") ? "text-white" : "text-gray-400 group-hover:text-[#155dfc]"}`}
+              size={18}
+            />
             <span className="font-medium">My Profile</span>
           </Link>
 
           {/* Admin Links */}
           {role === "admin" && (
             <>
-              <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-6 mb-2 ml-4">Admin Menu</div>
+              <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-6 mb-2 ml-4">
+                Admin Menu
+              </div>
               <Link
                 to="/dashboard"
                 onClick={handleClick}
                 className={`${baseLinkClasses} ${isActive("/dashboard") ? activeLinkClasses : inactiveLinkClasses}`}
               >
                 <FaClipboardList size={18} /> Admin Home
+              </Link>
+              <Link
+                to="/dashboard/create-donation-request"
+                onClick={handleClick}
+                className={`${baseLinkClasses} ${isActive("/dashboard/create-donation-request") ? activeLinkClasses : inactiveLinkClasses}`}
+              >
+                <FaHandHoldingHeart size={18} /> Request Donation
+              </Link>
+              <Link
+                to="/dashboard/my-donation-requests"
+                onClick={handleClick}
+                className={`${baseLinkClasses} ${isActive("/dashboard/my-donation-requests") ? activeLinkClasses : inactiveLinkClasses}`}
+              >
+                <FaGift size={18} /> My Requests
               </Link>
               <Link
                 to="/dashboard/all-users"
@@ -81,7 +103,9 @@ const DashboardSidebar = ({ closeSidebar }) => {
           {/* Donor Links */}
           {role === "donor" && (
             <>
-              <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-6 mb-2 ml-4">Donor Menu</div>
+              <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-6 mb-2 ml-4">
+                Donor Menu
+              </div>
               <Link
                 to="/dashboard"
                 onClick={handleClick}
@@ -102,27 +126,6 @@ const DashboardSidebar = ({ closeSidebar }) => {
                 className={`${baseLinkClasses} ${isActive("/dashboard/my-donation-requests") ? activeLinkClasses : inactiveLinkClasses}`}
               >
                 <FaGift size={18} /> My Requests
-              </Link>
-            </>
-          )}
-
-          {/* Volunteer Links */}
-          {role === "volunteer" && (
-            <>
-              <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mt-6 mb-2 ml-4">Volunteer Menu</div>
-              <Link
-                to="/dashboard"
-                onClick={handleClick}
-                className={`${baseLinkClasses} ${isActive("/dashboard") ? activeLinkClasses : inactiveLinkClasses}`}
-              >
-                <FaClipboardList size={18} /> Volunteer Home
-              </Link>
-              <Link
-                to="/dashboard/donation-management"
-                onClick={handleClick}
-                className={`${baseLinkClasses} ${isActive("/dashboard/donation-management") ? activeLinkClasses : inactiveLinkClasses}`}
-              >
-                <FaListAlt size={18} /> Manage Donations
               </Link>
             </>
           )}

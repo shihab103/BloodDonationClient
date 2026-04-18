@@ -7,6 +7,8 @@ import { AuthContext } from "../../Provider/AuthContext";
 
 const DonationRequest = () => {
   const { user, userInfo } = useContext(AuthContext);
+    console.log('hello',user.accessToken)
+
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
@@ -22,7 +24,6 @@ const DonationRequest = () => {
     formState: { errors },
   } = useForm();
 
-  // Load district & upazila data from json
   useEffect(() => {
     fetch("/districts.json")
       .then((res) => res.json())
